@@ -2,7 +2,12 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete } = require('../controllers/usuarios');
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
-const { validarCampos } = require('../middlewares/validar-campos');
+// Se comenta esto para usar una forma más ordenada de hacer estas inclusiones. Se crea archivo ../middlewares/index.js 
+// const { validarCampos } = require('../middlewares/validar-campos');
+// const { validarJWT } = require('../middlewares/validar-jwt');
+// const { esAdminRole, tieneRol } = require('../middlewares/validar-roles');
+// ...y se reemplaza con esto:
+const {validarCampos, validarJWT, esAdminRole, tieneRol} = require('../middlewares');
 const router = Router();
 
 router.get('/', usuariosGet);
@@ -23,6 +28,9 @@ router.post('/', [
 ], usuariosPost);
 
 router.delete('/:id', [
+    validarJWT,
+    // esAdminRole,
+    tieneRol('ADMIN_ROLE', 'VENTAS_ROLE'),
     check('id', 'No es un ID válido').isMongoId().custom(existeUsuarioPorId),
     validarCampos
 ], usuariosDelete);

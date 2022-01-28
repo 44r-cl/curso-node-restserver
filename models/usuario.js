@@ -34,7 +34,9 @@ const UsuarioSchema = Schema({
 // En este caso no se usa función flecha sino una función normal
 // Saca de la visualización algunos campos (versión y password) Interviene el método
 UsuarioSchema.methods.toJSON = function () {
-    const {__v, password, ...usuario} = this.toObject();
+    const {__v, password, _id, ...usuario} = this.toObject();
+    usuario.uid = _id;
+
     return usuario;
 }
 
