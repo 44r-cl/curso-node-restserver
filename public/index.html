@@ -28,10 +28,11 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        console.log('url', window.location.hostname.includes('localhost'));
         var url = (window.location.hostname.includes('localhost'))
                     ? 'http://localhost:8080/api/auth/google'
                     : 'https://webserver-curso-node-fherrera.herokuapp.com/api/auth/google';
+
+        console.log('url', window.location.hostname);
 
         function handleCredentialResponse(response) {
             // Google Token: ID_TOKEN
