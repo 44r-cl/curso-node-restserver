@@ -53,7 +53,7 @@ const actualizaProducto = async (req, res = response) => {
     const id = req.params.id;
     const nombre = req.body.nombre.toUpperCase();
     const {precio, descripcion, disponible, categoria} = req.body;
-console.log(id, precio, descripcion, disponible, categoria);
+
     const data = {
         nombre,
         usuario: req.usuario._id,

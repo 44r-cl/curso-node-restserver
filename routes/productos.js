@@ -1,9 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { json } = require('express/lib/response');
-const { crearProducto, obtenerProductos, actualizaProducto, obtenerProducto } = require('../controllers/productos');
+const { crearProducto, obtenerProductos, actualizaProducto, obtenerProducto, borrarProducto } = require('../controllers/productos');
 const { existeProductoPorNombre, existeProductoPorId, existeCategoriaPorId } = require('../helpers/db-validators');
-const { validarJWT, validarCampos } = require('../middlewares');
+const { validarJWT, validarCampos, esAdminRole } = require('../middlewares');
 
 const router = Router();
 
@@ -34,5 +33,13 @@ router.put('/:id', [
     validarCampos
 ], actualizaProducto
 );
+
+router.delete('/:id',[
+    validarJWT,
+    check('id', 'No es un ID válido').isMongoId().custom(existeProductoPorId),
+    esAdminRole,
+    validarCampos 
+],
+borrarProducto);
 
 module.exports = router;
